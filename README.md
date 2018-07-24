@@ -1,0 +1,2 @@
+# hexo-static
+hexo-static
