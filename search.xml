@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search>
+  <entry>
+    <title><![CDATA[第11章-字节码执行]]></title>
+    <url>%2F2018%2F07%2F23%2Fbooks%2FJava%2FJVM%2F%E5%AE%9E%E6%88%98Java%E8%99%9A%E6%8B%9F%E6%9C%BA-JVM%E6%95%85%E9%9A%9C%E8%AF%8A%E6%96%AD%E4%B8%8E%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%2F%E5%AE%9E%E6%88%98Java%E8%99%9A%E6%8B%9F%E6%9C%BA-JVM%E6%95%85%E9%9A%9C%E8%AF%8A%E6%96%AD%E4%B8%8E%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96-11-%E5%AD%97%E8%8A%82%E7%A0%81%E6%89%A7%E8%A1%8C%2F</url>
+    <content type="text"><![CDATA[锚点 11.4 谁说Java太刻板：Java Agent运行时修改类 11.4.1 使用-javaagent 参数启动java虚拟机 11.4.2 使用Java Agent为函数增加计时功能 11.4.3 动态重转换类 11.4.4 有关Java Agent的总结 内容 11.4 谁说Java太刻板：Java Agent运行时修改类&#160;&#160;&#160;&#160;在JDK1.5时，引入了java.lang.instrument包，该包提供了一些工具帮助开发人员在java程序运行时，动态修改系统中的Class类型。其中，使用该软件包的一个关键组件为Java Agent。从名字看，似乎可以理解成Java代理，而实际上，它的功能更像是Class类型的转换器，它可以在运行时接受程序外部请求，对Class类型进行修改。&#160;&#160;&#160;&#160;在命令行执行java，可以看到java命令的帮助，其中，不难发现有一个javaagent的选项。12-javaagent:&lt;jarpath&gt;[=&lt;options&gt;]加载Java 编程语言代理，请参阅 java.lang.instrument &#160;&#160;&#160;&#160;也就是说，Java程序在运行时，可以指定一个Java Agent作为其编程语言代理。 11.4.1 使用-javaagent 参数启动java虚拟机&#160;&#160;&#160;&#160;参数-javaagent可以用于指定一个jar包，并且对该jar包有如下要求: 这个jar包的MANIFEST.MF文件必须指定Premain-Class项。 Premain-Class指定的那个类必须实现Premain-Class项。 &#160;&#160;&#160;&#160;Premain-Class仅从英文单词字面上理解，就是运行在main()函数之前的类。当java虚拟机启动时，在执行main()函数之前，虚拟机会运行-javaagent所指定jar包内Premain-Class这个类的premain()方法，其中，premain()方法的签名如下：1public static void premain(String agentArgs,Instrumentation inst) &#160;&#160;&#160;&#160;其中，agentArgs是通过命令行传入给Java Agent的参数，inst提供了Java Class字节码转换的工具。Instrumentation类的常用API如下： void addTransformer(ClassFileTransformer transformer,boolean canRetransform)增加了一个Class文件的转换器，转换器用于改变Class二进制的数据，参数canRetransform设置是否允许重新转换。 void redefineClass(ClassDefinition… definitions)在类加载之前，重新定义Class文件。ClassDefinition表示对一个类新的定义。如果在类加载之后，需要使用retransformClasses()函数重新定义类。 boolean removeTransformer(ClassFileTransformer transformer)移除一个类转换器 void retransformClasses(Class&lt;?&gt;… classses)在类加载之后，重新定义Class。&#160;&#160;&#160;&#160;下面的例子定义了一个Java Agent，这个Agent打印出main()函数运行后，系统载入的类型。 1234567891011121314public class PreMainTraceAgent &#123; public static void premain(String agentArgs,Instrumentation inst) &#123; System.out.println("agentArgs:"+agentArgs); inst.addTransformer(new ClassFileTransformer() &#123; @Override public byte[] transform(ClassLoader loader, String className, Class&lt;?&gt; classBeingRedefined, ProtectionDomain protectionDomain, byte[] classfileBuffer) throws IllegalClassFormatException &#123; System.out.println("load Class:" + className); return classfileBuffer; &#125; &#125;); &#125;&#125; &#160;&#160;&#160;&#160;上述代码第2行，定义了Agent的premain()方法，该方法会在main()函数执行前调用。&#160;&#160;&#160;&#160;代码第2行，打印了传递给Agent的参数。&#160;&#160;&#160;&#160;代码第5行，加入了一个类转换器，这里使用匿名内部类，定义了一个类转换器。这个类转换器很简单，只是简单地打印出获取的类名，不做实质性转换。&#160;&#160;&#160;&#160;代码第7行为类转化器接口的transform()方法，用于完成类的转换。该接口函数定义如下： 12byte[] transform(ClassLoader loader, String className, Class&lt;?&gt; classBeingRedefined, ProtectionDomain protectionDomain, byte[] classfileBuffer) throws IllegalClassFormatException; 其中，loader为定义类的类加载器，className表示类的全限定名，比如“java/lang/String”。参数classBeingRedefined表示：如果是被重定义或重转换触发，则为重定义或重转换的类；如果是类加载，则为null。参数 protectionDomain 表示要定义或重定义的类的保护域。参数classfileBuffer表示类文件格式的二进制数据(只读，不能修改)。该函数的返回值为重新定义的新的类的二进制数据。将以上的Java Agent打包成jat.jar 。并设置META-INF/MANIFEST.MF文件如下： 1234Manifes-Version: 1.0Premain-Class: geym.zbase.ch11.agent.PreMainTraceAgentCan-Redine-Classes: trueCan-Retransform-Classes: true 这就完成了一个保存有合法Java Agent的jar包。使用以下代码测试这个jat.jar:123456789101112131415161718public class Account &#123; public void operation() &#123; System.out.println("operation ..."); try &#123; Thread.sleep(10); &#125;catch (Exception e) &#123; e.printStackTrace(); &#125; &#125;&#125;public class RunAccountMain &#123; public static void main(String[] args) &#123; Account account = new Account(); account.operation(); &#125;&#125; 使用Java虚拟机参数: -javaagent:path/jat.jar，输出如下： 11.4.2 使用Java Agent为函数增加计时功能11.4.3 动态重转换类11.4.4 有关Java Agent的总结github]]></content>
+      <categories>
+        <category>书籍</category>
+      </categories>
+      <tags>
+        <tag>Java</tag>
+        <tag>JVM</tag>
+        <tag>字节码</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[《实战Java虚拟机-JVM故障诊断与性能优化》]]></title>
+    <url>%2F2018%2F07%2F23%2Fbooks%2FJava%2FJVM%2F%E5%AE%9E%E6%88%98Java%E8%99%9A%E6%8B%9F%E6%9C%BA-JVM%E6%95%85%E9%9A%9C%E8%AF%8A%E6%96%AD%E4%B8%8E%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%2F%E5%AE%9E%E6%88%98Java%E8%99%9A%E6%8B%9F%E6%9C%BA-JVM%E6%95%85%E9%9A%9C%E8%AF%8A%E6%96%AD%E4%B8%8E%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%2F</url>
+    <content type="text"><![CDATA[目录 第11章-字节码执行]]></content>
+      <categories>
+        <category>书籍</category>
+      </categories>
+      <tags>
+        <tag>Java</tag>
+        <tag>JVM</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[BOOKS]]></title>
+    <url>%2F2018%2F07%2F23%2Fbooks%2F</url>
+    <content type="text"><![CDATA[@(阿洋)[2018 start] Java 《实战Java虚拟机-JVM故障诊断与性能优化》[2016年第3次印刷] 《Java性能权威指南》[2017年第5次印刷] Scala Python]]></content>
+      <categories>
+        <category>书籍</category>
+      </categories>
+      <tags>
+        <tag>Java</tag>
+      </tags>
+  </entry>
+</search>
