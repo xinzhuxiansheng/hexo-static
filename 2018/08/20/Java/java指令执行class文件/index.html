@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="@(阿洋)[2018 start] Java  《实战Java虚拟机-JVM故障诊断与性能优化》[2016年第3次印刷] 《Java性能权威指南》[2017年第5次印刷]  Scala Python">
+<meta name="description" content="java指令执行class文件 通过我们会通过IDE点击运行某个java中的main方法 或一个完整的jar 通过-cp指定main方法,但也有某种极端的情况下，我们需要使用 java 命令 执行某个编译过的java文件。  知识点梳理  java指令默认在寻找class文件的地址是通过CLASSPATH环境变量中指定的目录寻找，所以直接在CLASSPATH环境变量中加入.; CLASSPATH的">
 <meta name="keywords" content="Java">
 <meta property="og:type" content="article">
-<meta property="og:title" content="BOOKS">
-<meta property="og:url" content="http://yoursite.com/2018/07/23/books/index.html">
+<meta property="og:title" content="java指令执行class文件">
+<meta property="og:url" content="http://yoursite.com/2018/08/20/Java/java指令执行class文件/index.html">
 <meta property="og:site_name" content="阿洋&#39;s Blog">
-<meta property="og:description" content="@(阿洋)[2018 start] Java  《实战Java虚拟机-JVM故障诊断与性能优化》[2016年第3次印刷] 《Java性能权威指南》[2017年第5次印刷]  Scala Python">
+<meta property="og:description" content="java指令执行class文件 通过我们会通过IDE点击运行某个java中的main方法 或一个完整的jar 通过-cp指定main方法,但也有某种极端的情况下，我们需要使用 java 命令 执行某个编译过的java文件。  知识点梳理  java指令默认在寻找class文件的地址是通过CLASSPATH环境变量中指定的目录寻找，所以直接在CLASSPATH环境变量中加入.; CLASSPATH的">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2018-07-22T18:32:06.251Z">
+<meta property="og:updated_time" content="2018-08-19T19:04:40.367Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="BOOKS">
-<meta name="twitter:description" content="@(阿洋)[2018 start] Java  《实战Java虚拟机-JVM故障诊断与性能优化》[2016年第3次印刷] 《Java性能权威指南》[2017年第5次印刷]  Scala Python">
+<meta name="twitter:title" content="java指令执行class文件">
+<meta name="twitter:description" content="java指令执行class文件 通过我们会通过IDE点击运行某个java中的main方法 或一个完整的jar 通过-cp指定main方法,但也有某种极端的情况下，我们需要使用 java 命令 执行某个编译过的java文件。  知识点梳理  java指令默认在寻找class文件的地址是通过CLASSPATH环境变量中指定的目录寻找，所以直接在CLASSPATH环境变量中加入.; CLASSPATH的">
 
 
 
@@ -120,13 +120,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2018/07/23/books/"/>
+  <link rel="canonical" href="http://yoursite.com/2018/08/20/Java/java指令执行class文件/"/>
 
 
 
 
 
-  <title>BOOKS | 阿洋's Blog</title>
+  <title>java指令执行class文件 | 阿洋's Blog</title>
   
 
 
@@ -283,7 +283,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/07/23/books/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/08/20/Java/java指令执行class文件/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="阿洋">
@@ -300,7 +300,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">BOOKS</h1>
+          <h1 class="post-title" itemprop="name headline">java指令执行class文件</h1>
         
 
         <div class="post-meta">
@@ -312,8 +312,8 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-07-23T01:32:29+08:00">
-                2018-07-23
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-08-20T03:02:35+08:00">
+                2018-08-20
               </time>
             
 
@@ -335,8 +335,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/书籍/" itemprop="url" rel="index">
-                    <span itemprop="name">书籍</span>
+                  <a href="/categories/Java/" itemprop="url" rel="index">
+                    <span itemprop="name">Java</span>
                   </a>
                 </span>
 
@@ -372,14 +372,35 @@
       
 
       
-        <p>@(阿洋)[2018 start]</p>
-<p><strong><code>Java</code></strong></p>
+        <h2 id="java指令执行class文件"><a href="#java指令执行class文件" class="headerlink" title="java指令执行class文件"></a>java指令执行class文件</h2><blockquote>
+<p>通过我们会通过IDE点击运行某个java中的main方法 或一个完整的jar 通过-cp指定main方法,但也有某种极端的情况下，我们需要使用 java 命令 执行某个编译过的java文件。</p>
+</blockquote>
+<p><code>知识点梳理</code></p>
 <ul>
-<li><a href="/2018/07/23/books/Java/JVM/实战Java虚拟机-JVM故障诊断与性能优化/实战Java虚拟机-JVM故障诊断与性能优化/" title="《实战Java虚拟机-JVM故障诊断与性能优化》[2016年第3次印刷]">《实战Java虚拟机-JVM故障诊断与性能优化》[2016年第3次印刷]</a></li>
-<li>《Java性能权威指南》[2017年第5次印刷]</li>
+<li>java指令默认在寻找class文件的地址是通过CLASSPATH环境变量中指定的目录寻找，所以直接在CLASSPATH环境变量中加入<code>.;</code> CLASSPATH的值为 <code>.;%JAVA_HOME%\lib;%JAVA_HOME%\lib\tools.jar</code></li>
+<li>java指定执行 class 文件，区分有无package包名</li>
 </ul>
-<p><strong><code>Scala</code></strong></p>
-<p><strong><code>Python</code></strong></p>
+<ol>
+<li>无包名存在<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">HelloWorld</span> </span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">		System.out.println(<span class="string">"hello world!"</span>);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>执行过程<br><figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">javac HelloWorld.java</span><br><span class="line">java HelloWorld</span><br></pre></td></tr></table></figure></p>
+<ol start="2">
+<li>有包名<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.example</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">HelloWorld</span> </span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">		System.out.println(<span class="string">"hello world!"</span>);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>执行过程<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">javac -d . HelloWorld.java</span><br><span class="line">java HelloWorld</span><br></pre></td></tr></table></figure></p>
+<blockquote>
+<p>javac 参数：  <code>-d .</code> 指定HelloWorld.java 编译生成的class 的文件存放路径,<code>.</code> 表示存放在当前路径</p>
+</blockquote>
+<ol start="3">
+<li>在ecplise的maven项目中如何手动执行java指令</li>
+</ol>
+<ul>
+<li>先执行maven install 在target目录中 生成class文件</li>
+<li>cmd 到 项目target的classes目录中(在classes当前路径下即可)，执行java指令，并 指定包名</li>
+<li>java com.example.HelloWorld</li>
+</ul>
 
       
     </div>
@@ -410,15 +431,15 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
+              <a href="/2018/08/17/SpringBoot/SpringBoot独白/" rel="next" title="Spring Boot Overview">
+                <i class="fa fa-chevron-left"></i> Spring Boot Overview
+              </a>
+            
           </div>
 
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018/07/23/books/Java/JVM/实战Java虚拟机-JVM故障诊断与性能优化/实战Java虚拟机-JVM故障诊断与性能优化/" rel="prev" title="《实战Java虚拟机-JVM故障诊断与性能优化》">
-                《实战Java虚拟机-JVM故障诊断与性能优化》 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -470,8 +491,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -531,6 +561,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#java指令执行class文件"><span class="nav-text">java指令执行class文件</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       

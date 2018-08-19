@@ -5,7 +5,7 @@
   
 
 
-<html class="theme-next mist use-motion" lang="">
+<html class="theme-next pisces use-motion" lang="">
 <head>
   <meta charset="UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -80,12 +80,12 @@
 
 
 <meta property="og:type" content="website">
-<meta property="og:title" content="新猪先生&#39;s Blog">
+<meta property="og:title" content="阿洋&#39;s Blog">
 <meta property="og:url" content="http://yoursite.com/index.html">
-<meta property="og:site_name" content="新猪先生&#39;s Blog">
+<meta property="og:site_name" content="阿洋&#39;s Blog">
 <meta property="og:locale" content="default">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="新猪先生&#39;s Blog">
+<meta name="twitter:title" content="阿洋&#39;s Blog">
 
 
 
@@ -93,7 +93,7 @@
   var NexT = window.NexT || {};
   var CONFIG = {
     root: '/',
-    scheme: 'Mist',
+    scheme: 'Pisces',
     version: '5.1.4',
     sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
     fancybox: true,
@@ -121,7 +121,7 @@
 
 
 
-  <title>新猪先生's Blog</title>
+  <title>阿洋's Blog</title>
   
 
 
@@ -152,7 +152,7 @@
     <div class="custom-logo-site-title">
       <a href="/"  class="brand" rel="start">
         <span class="logo-line-before"><i></i></span>
-        <span class="site-title">新猪先生's Blog</span>
+        <span class="site-title">阿洋's Blog</span>
         <span class="logo-line-after"><i></i></span>
       </a>
     </div>
@@ -279,6 +279,477 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/08/20/Java/java指令执行class文件/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="阿洋">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="阿洋's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/08/20/Java/java指令执行class文件/" itemprop="url">java指令执行class文件</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-08-20T03:02:35+08:00">
+                2018-08-20
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java/" itemprop="url" rel="index">
+                    <span itemprop="name">Java</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="java指令执行class文件"><a href="#java指令执行class文件" class="headerlink" title="java指令执行class文件"></a>java指令执行class文件</h2><blockquote>
+<p>通过我们会通过IDE点击运行某个java中的main方法 或一个完整的jar 通过-cp指定main方法,但也有某种极端的情况下，我们需要使用 java 命令 执行某个编译过的java文件。</p>
+</blockquote>
+<p><code>知识点梳理</code></p>
+<ul>
+<li>java指令默认在寻找class文件的地址是通过CLASSPATH环境变量中指定的目录寻找，所以直接在CLASSPATH环境变量中加入<code>.;</code> CLASSPATH的值为 <code>.;%JAVA_HOME%\lib;%JAVA_HOME%\lib\tools.jar</code></li>
+<li>java指定执行 class 文件，区分有无package包名</li>
+</ul>
+<ol>
+<li>无包名存在<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">HelloWorld</span> </span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">		System.out.println(<span class="string">"hello world!"</span>);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>执行过程<br><figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">javac HelloWorld.java</span><br><span class="line">java HelloWorld</span><br></pre></td></tr></table></figure></p>
+<ol start="2">
+<li>有包名<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.example</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">HelloWorld</span> </span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">		System.out.println(<span class="string">"hello world!"</span>);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>执行过程<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">javac -d . HelloWorld.java</span><br><span class="line">java HelloWorld</span><br></pre></td></tr></table></figure></p>
+<blockquote>
+<p>javac 参数：  <code>-d .</code> 指定HelloWorld.java 编译生成的class 的文件存放路径,<code>.</code> 表示存放在当前路径</p>
+</blockquote>
+<ol start="3">
+<li>在ecplise的maven项目中如何手动执行java指令</li>
+</ol>
+<ul>
+<li>先执行maven install 在target目录中 生成class文件</li>
+<li>cmd 到 项目target的classes目录中(在classes当前路径下即可)，执行java指令，并 指定包名</li>
+<li>java com.example.HelloWorld</li>
+</ul>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/08/17/SpringBoot/SpringBoot独白/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="阿洋">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="阿洋's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/08/17/SpringBoot/SpringBoot独白/" itemprop="url">Spring Boot Overview</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-08-17T00:56:11+08:00">
+                2018-08-17
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Spring-Boot/" itemprop="url" rel="index">
+                    <span itemprop="name">Spring Boot</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="Spring-Boot-独白"><a href="#Spring-Boot-独白" class="headerlink" title="Spring Boot 独白"></a>Spring Boot 独白</h1><h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>&#160; &#160; &#160; &#160;随着动态语言的流行(Ruby,Groovy,Scala,Node.js), Java 的开发显得格外的笨重：繁多的配置，底下的开发项目，复杂的部署流程以及第三方技术集成难度大。<br>&#160; &#160; &#160; &#160;在上述环境下，Spring boot 应运而生。它使用“习惯优于配置”(项目中大量的配置，此外还内置一个习惯性的配置，让你无需手动进行配置)的理念让你的项目快速运行起来。使用Spring Boot很容易创建一个独立运行(运行jar，内嵌Servlet容器)，准生产级别的基于Spring框架的项目，使用Spring Boot 你可以不用或者只需要很少的Spring 配置</p>
+<h2 id="特性"><a href="#特性" class="headerlink" title="特性"></a>特性</h2><ul>
+<li>很容易基于Spring框架，创建独立运行的jar服务</li>
+<li>直接嵌套Tomcat，jetty或Undertow(无需部署WAR文件)</li>
+<li>提供模块化的依赖组件，简化项目构建及配置</li>
+<li>尽可能自动配置Spring和第三方库</li>
+<li>提供生产环境的监控功能,例如指标，运行状况检查和外部化配置</li>
+</ul>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/07/26/Java/如何手动解压和重新打包jar/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="阿洋">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="阿洋's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/07/26/Java/如何手动解压和重新打包jar/" itemprop="url">如何手动解压和重新打包jar</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-07-26T00:17:29+08:00">
+                2018-07-26
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java/" itemprop="url" rel="index">
+                    <span itemprop="name">Java</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="如何手动解压和重新打包jar"><a href="#如何手动解压和重新打包jar" class="headerlink" title="如何手动解压和重新打包jar"></a>如何手动解压和重新打包jar</h1><p><strong><code>场景</code></strong></p>
+<ol>
+<li>在开发javaagent项目中，我们会在META-INF/MANIFEST.MF中设置一些相关的参数</li>
+</ol>
+<p><strong><code>解决过程</code></strong><br>我们可以使用<strong>maven-shade-plugin</strong>插件，在xml中配置Premain-Class标签，这样我们打好的jar包，META-INF/MANIFEST.MF文件就包含了Premain-Class值，而这次我想说的是，不使用插件情况下，我们如何手动操作，但这也不仅仅局限的解决修改META-INF/MANIFEST.MF文件的值，还有很多使用场景,后面会补充进来。</p>
+<p>简单介绍下META-INF/MANIFEST.MF ，它会自动生成在你的jar里面,它包含jar的基本信息及运行环境。所以，你只需要解压jar就能看到。<br>解压命令：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">jar -xvf xxx.jar</span><br></pre></td></tr></table></figure></p>
+<p>接下来，我们在META-INF/MANIFEST.MF追加如下内容<br>修改内容：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Premain-Class: geym.zbase.ch11.agent.PreMainTraceAgent</span><br><span class="line">Can-Redine-Classes: <span class="keyword">true</span></span><br><span class="line">Can-Retransform-Classes: <span class="keyword">true</span></span><br></pre></td></tr></table></figure></p>
+<p>那这样，我们就直接打包就ok。</p>
+<blockquote>
+<p><span style="border-bottom:2px dashed red;">这 这里需要注意的地方：jar命令默认是不会使用原先的MANIFEST.MF文件的，意味着你的修改不会被生效，会重新生成一个默认的，所以我们如果想要保留原先的MANIFEST.MF文件必须指定，使用如下的命令指定原MF文件</span><br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">jar -cvf xxx.jar(新包的名称) ./META-INF/MANIFEST.MF  ./(路径)</span><br></pre></td></tr></table></figure></p>
+</blockquote>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/07/23/books/Java/JVM/实战Java虚拟机-JVM故障诊断与性能优化/实战Java虚拟机-JVM故障诊断与性能优化-11-字节码执行/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -288,7 +759,7 @@
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="新猪先生's Blog">
+      <meta itemprop="name" content="阿洋's Blog">
     </span>
 
     
@@ -374,20 +845,28 @@
           
             <p><strong><code>锚点</code></strong></p>
 <ul>
-<li><a href="#1">11.4 谁说Java太刻板：Java Agent运行时修改类</a><ul>
-<li><a href="#2">11.4.1 使用-javaagent 参数启动java虚拟机</a></li>
-<li><a href="#3">11.4.2 使用Java Agent为函数增加计时功能</a></li>
-<li><a href="#4">11.4.3 动态重转换类</a></li>
-<li><a href="#5">11.4.4 有关Java Agent的总结</a></li>
+<li><a href="#31">11.3 更上一层楼：再看ASM</a><ul>
+<li><a href="#32">11.3.1 为类增加安全控制 </a></li>
+</ul>
+</li>
+<li><a href="#41">11.4 谁说Java太刻板：Java Agent运行时修改类</a><ul>
+<li><a href="#42">11.4.1 使用-javaagent 参数启动java虚拟机</a></li>
+<li><a href="#43">11.4.2 使用Java Agent为函数增加计时功能</a></li>
+<li><a href="#44">11.4.3 动态重转换类</a></li>
+<li><a href="#45">11.4.4 有关Java Agent的总结</a></li>
 </ul>
 </li>
 </ul>
 <p><strong><code>内容</code></strong></p>
-<h2 id="11-4-谁说Java太刻板：Java-Agent运行时修改类"><a href="#11-4-谁说Java太刻板：Java-Agent运行时修改类" class="headerlink" title="11.4 谁说Java太刻板：Java Agent运行时修改类"></a><a name="1">11.4 谁说Java太刻板：Java Agent运行时修改类</a></h2><p>&#160;&#160;&#160;&#160;在JDK1.5时，引入了java.lang.instrument包，该包提供了一些工具帮助开发人员在java程序运行时，动态修改系统中的Class类型。其中，使用该软件包的一个关键组件为Java Agent。从名字看，似乎可以理解成Java代理，而实际上，它的功能更像是Class类型的转换器，它可以在运行时接受程序外部请求，对Class类型进行修改。<br>&#160;&#160;&#160;&#160;在命令行执行java，可以看到java命令的帮助，其中，不难发现有一个javaagent的选项。<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">-javaagent:&lt;jarpath&gt;[=&lt;options&gt;]</span><br><span class="line">加载Java 编程语言代理，请参阅 java.lang.instrument</span><br></pre></td></tr></table></figure></p>
+<h2 id="11-3-更上一层楼：再看ASM"><a href="#11-3-更上一层楼：再看ASM" class="headerlink" title="11.3 更上一层楼：再看ASM"></a><a name="31">11.3 更上一层楼：再看ASM</a></h2><p>CGLIB，其底层就是基于ASM的，而要用好ASM，了解Class文件结构和异常指令是必不可少。通过ASM的字节码操作，可以动态创建新的类型，可以为类增加新的功能。虽然使用CGLIB这些高级库也可以完成大量的工作，但是直接使用ASM还是大有好处，灵活度最高，功能也最为强大，可以将操作粒度定位到每一条指定。</p>
+<h2 id="11-3-1-为类增加安全控制"><a href="#11-3-1-为类增加安全控制" class="headerlink" title="11.3.1 为类增加安全控制"></a><a name="32">11.3.1 为类增加安全控制</a></h2><p>现在有个账户类，可以进行某些操作：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Account</span> </span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">operation</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		System.out.println(<span class="string">"operation ..."</span>);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>目前，这个operation()方法没有任何控制手段，现在希望为operation()方法增加一些安全校验，以判断这个对象是否有权限执行这个方法，如果有，则执行该方法，如果没有，则直接退出，当然，这一切是要在不修改Account类源码的前提下进行的。</p>
+<h2 id="11-4-谁说Java太刻板：Java-Agent运行时修改类"><a href="#11-4-谁说Java太刻板：Java-Agent运行时修改类" class="headerlink" title="11.4 谁说Java太刻板：Java Agent运行时修改类"></a><a name="41">11.4 谁说Java太刻板：Java Agent运行时修改类</a></h2><p>&#160;&#160;&#160;&#160;在JDK1.5时，引入了java.lang.instrument包，该包提供了一些工具帮助开发人员在java程序运行时，动态修改系统中的Class类型。其中，使用该软件包的一个关键组件为Java Agent。从名字看，似乎可以理解成Java代理，而实际上，它的功能更像是Class类型的转换器，它可以在运行时接受程序外部请求，对Class类型进行修改。<br>&#160;&#160;&#160;&#160;在命令行执行java，可以看到java命令的帮助，其中，不难发现有一个javaagent的选项。<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">-javaagent:&lt;jarpath&gt;[=&lt;options&gt;]</span><br><span class="line">加载Java 编程语言代理，请参阅 java.lang.instrument</span><br></pre></td></tr></table></figure></p>
 <p>&#160;&#160;&#160;&#160;也就是说，Java程序在运行时，可以指定一个Java Agent作为其编程语言代理。</p>
-<h3 id="11-4-1-使用-javaagent-参数启动java虚拟机"><a href="#11-4-1-使用-javaagent-参数启动java虚拟机" class="headerlink" title="11.4.1 使用-javaagent 参数启动java虚拟机"></a><a name="2">11.4.1 使用-javaagent 参数启动java虚拟机</a></h3><p>&#160;&#160;&#160;&#160;参数-javaagent可以用于指定一个jar包，并且对该jar包有如下要求:</p>
+<h3 id="11-4-1-使用-javaagent-参数启动java虚拟机"><a href="#11-4-1-使用-javaagent-参数启动java虚拟机" class="headerlink" title="11.4.1 使用-javaagent 参数启动java虚拟机"></a><a name="42">11.4.1 使用-javaagent 参数启动java虚拟机</a></h3><p>&#160;&#160;&#160;&#160;参数-javaagent可以用于指定一个jar包，并且对该jar包有如下要求:</p>
 <ul>
-<li><span style="border-bottom:2px dashed yellow;">这个jar包的MANIFEST.MF文件必须指定Premain-Class项。</span></li>
+<li><span style="border-bottom:2px dashed red;">这个jar包的MANIFEST.MF文件必须指定Premain-Class项。</span></li>
 <li>Premain-Class指定的那个类必须实现Premain-Class项。</li>
 </ul>
 <p>&#160;&#160;&#160;&#160;Premain-Class仅从英文单词字面上理解，就是运行在main()函数之前的类。当java虚拟机启动时，在执行main()函数之前，虚拟机会运行-javaagent所指定jar包内Premain-Class这个类的premain()方法，其中，premain()方法的签名如下：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">premain</span><span class="params">(String agentArgs,Instrumentation inst)</span></span></span><br></pre></td></tr></table></figure></p>
@@ -401,11 +880,14 @@
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">PreMainTraceAgent</span> </span>&#123;</span><br><span class="line">	</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">premain</span><span class="params">(String agentArgs,Instrumentation inst)</span> </span>&#123;</span><br><span class="line">		System.out.println(<span class="string">"agentArgs:"</span>+agentArgs);</span><br><span class="line">		inst.addTransformer(<span class="keyword">new</span> ClassFileTransformer() &#123;</span><br><span class="line">			<span class="meta">@Override</span></span><br><span class="line">			<span class="keyword">public</span> <span class="keyword">byte</span>[] transform(ClassLoader loader, String className, Class&lt;?&gt; classBeingRedefined,</span><br><span class="line">					ProtectionDomain protectionDomain, <span class="keyword">byte</span>[] classfileBuffer) <span class="keyword">throws</span> IllegalClassFormatException &#123;</span><br><span class="line">				System.out.println(<span class="string">"load Class:"</span> + className);</span><br><span class="line">				<span class="keyword">return</span> classfileBuffer;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>&#160;&#160;&#160;&#160;上述代码第2行，定义了Agent的premain()方法，该方法会在main()函数执行前调用。<br>&#160;&#160;&#160;&#160;代码第2行，打印了传递给Agent的参数。<br>&#160;&#160;&#160;&#160;代码第5行，加入了一个类转换器，这里使用匿名内部类，定义了一个类转换器。这个类转换器很简单，只是简单地打印出获取的类名，不做实质性转换。<br>&#160;&#160;&#160;&#160;代码第7行为类转化器接口的transform()方法，用于完成类的转换。该接口函数定义如下：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">byte</span>[] transform(ClassLoader loader, String className, Class&lt;?&gt; classBeingRedefined,</span><br><span class="line">                                        ProtectionDomain protectionDomain, <span class="keyword">byte</span>[] classfileBuffer) <span class="keyword">throws</span> IllegalClassFormatException;</span><br></pre></td></tr></table></figure>
-<p>其中，loader为定义类的类加载器，className表示类的全限定名，比如“java/lang/String”。参数classBeingRedefined表示：如果是被重定义或重转换触发，则为重定义或重转换的类；如果是类加载，则为null。参数 protectionDomain 表示要定义或重定义的类的保护域。参数classfileBuffer表示类文件格式的二进制数据(只读，不能修改)。该函数的返回值为重新定义的新的类的二进制数据。<br>将以上的Java Agent打包成jat.jar 。并设置META-INF/MANIFEST.MF文件如下：</p>
+<p>其中，loader为定义类的类加载器，className表示类的全限定名，比如“java/lang/String”。参数classBeingRedefined表示：如果是被重定义或重转换触发，则为重定义或重转换的类；如果是类加载，则为null。参数 protectionDomain 表示要定义或重定义的类的保护域。参数classfileBuffer表示类文件格式的二进制数据(只读，不能修改)。该函数的返回值为重新定义的新的类的二进制数据。<br><span style="border-bottom:2px dashed red;">将以上的Java Agent打包成jat.jar 。并设置META-INF/MANIFEST.MF文件如下：()</span></p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Manifes-Version: <span class="number">1.0</span></span><br><span class="line">Premain-Class: geym.zbase.ch11.agent.PreMainTraceAgent</span><br><span class="line">Can-Redine-Classes: <span class="keyword">true</span></span><br><span class="line">Can-Retransform-Classes: <span class="keyword">true</span></span><br></pre></td></tr></table></figure>
 <p>这就完成了一个保存有合法Java Agent的jar包。使用以下代码测试这个jat.jar:<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Account</span> </span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">operation</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		System.out.println(<span class="string">"operation ..."</span>);</span><br><span class="line">		<span class="keyword">try</span> &#123;</span><br><span class="line">			Thread.sleep(<span class="number">10</span>);</span><br><span class="line">		&#125;<span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">			e.printStackTrace();</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">RunAccountMain</span> </span>&#123;</span><br><span class="line">	</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">		Account account = <span class="keyword">new</span> Account();</span><br><span class="line">		account.operation();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>使用Java虚拟机参数: -javaagent:path/jat.jar，输出如下：</p>
-<h3 id="11-4-2-使用Java-Agent为函数增加计时功能"><a href="#11-4-2-使用Java-Agent为函数增加计时功能" class="headerlink" title="11.4.2 使用Java Agent为函数增加计时功能"></a><a name="3">11.4.2 使用Java Agent为函数增加计时功能</a></h3><h3 id="11-4-3-动态重转换类"><a href="#11-4-3-动态重转换类" class="headerlink" title="11.4.3 动态重转换类"></a><a name="4">11.4.3 动态重转换类</a></h3><h3 id="11-4-4-有关Java-Agent的总结"><a href="#11-4-4-有关Java-Agent的总结" class="headerlink" title="11.4.4 有关Java Agent的总结"></a><a name="5">11.4.4 有关Java Agent的总结</a></h3><p><strong><code>github</code></strong></p>
+<p>使用Java虚拟机参数: -javaagent:path/jat.jar，输出如下：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line">gentArgs:<span class="keyword">null</span></span><br><span class="line">load Class:java/lang/invoke/MethodHandleImpl</span><br><span class="line">load Class:java/lang/invoke/MethodHandleImpl$<span class="number">1</span></span><br><span class="line">load Class:java/lang/invoke/MethodHandleImpl$<span class="number">2</span></span><br><span class="line">load Class:java/util/function/Function</span><br><span class="line">load Class:java/lang/invoke/MethodHandleImpl$<span class="number">3</span></span><br><span class="line">load Class:java/lang/invoke/MethodHandleImpl$<span class="number">4</span></span><br><span class="line">load Class:java/lang/ClassValue</span><br><span class="line">load Class:java/lang/ClassValue$Entry</span><br><span class="line">load Class:java/lang/ClassValue$Identity</span><br><span class="line">load Class:java/lang/ClassValue$Version</span><br><span class="line">load Class:java/lang/invoke/MemberName$Factory</span><br><span class="line">load Class:java/lang/invoke/MethodHandleStatics</span><br><span class="line">load Class:java/lang/invoke/MethodHandleStatics$<span class="number">1</span></span><br><span class="line">load Class:sun/misc/PostVMInitHook</span><br><span class="line">load Class:sun/usagetracker/UsageTrackerClient</span><br><span class="line">load Class:java/util/concurrent/atomic/AtomicBoolean</span><br><span class="line">load Class:sun/usagetracker/UsageTrackerClient$<span class="number">1</span></span><br><span class="line">load Class:sun/usagetracker/UsageTrackerClient$<span class="number">4</span></span><br><span class="line">load Class:sun/usagetracker/UsageTrackerClient$<span class="number">2</span></span><br><span class="line">load Class:java/lang/ProcessEnvironment</span><br><span class="line">load Class:java/lang/ProcessEnvironment$NameComparator</span><br><span class="line">load Class:java/lang/ProcessEnvironment$EntryComparator</span><br><span class="line">load Class:java/util/Collections$UnmodifiableMap</span><br><span class="line">load Class:java/util/TreeMap</span><br><span class="line">load Class:java/util/NavigableMap</span><br><span class="line">load Class:java/util/SortedMap</span><br><span class="line">load Class:java/lang/ProcessEnvironment$CheckedEntrySet</span><br><span class="line">load Class:java/util/HashMap$EntrySet</span><br><span class="line">load Class:java/lang/ProcessEnvironment$CheckedEntrySet$<span class="number">1</span></span><br><span class="line">load Class:java/util/HashMap$EntryIterator</span><br><span class="line">load Class:java/util/HashMap$HashIterator</span><br><span class="line">load Class:java/lang/ProcessEnvironment$CheckedEntry</span><br><span class="line">load Class:java/util/TreeMap$Entry</span><br><span class="line">load Class:sun/usagetracker/UsageTrackerClient$<span class="number">3</span></span><br><span class="line">load Class:java/lang/StringCoding</span><br><span class="line">load Class:java/lang/ThreadLocal$ThreadLocalMap</span><br><span class="line">load Class:java/lang/ThreadLocal$ThreadLocalMap$Entry</span><br><span class="line">load Class:java/lang/StringCoding$StringEncoder</span><br><span class="line">load Class:java/io/FileOutputStream$<span class="number">1</span></span><br><span class="line">load Class:sun/launcher/LauncherHelper</span><br><span class="line">load Class:sun/nio/cs/MS1252</span><br><span class="line">load Class:sun/nio/cs/SingleByte</span><br><span class="line">load Class:java/lang/StringCoding$StringDecoder</span><br><span class="line">load Class:sun/nio/cs/SingleByte$Decoder</span><br><span class="line">load Class:blog/java/SHI_ZHAN_JAVA_XU_NI_JI_JVM_GU_ZHANG_ZHENGDUAN_YU_XING_NENG_YOU_HUA/chapter11/RunAccountMain</span><br><span class="line">load Class:sun/launcher/LauncherHelper$FXHelper</span><br><span class="line">load Class:java/lang/Class$MethodArray</span><br><span class="line">load Class:java/lang/Void</span><br><span class="line">load Class:blog/java/SHI_ZHAN_JAVA_XU_NI_JI_JVM_GU_ZHANG_ZHENGDUAN_YU_XING_NENG_YOU_HUA/chapter11/Account</span><br><span class="line">operation ...</span><br><span class="line">load Class:java/lang/Shutdown</span><br><span class="line">load Class:java/lang/Shutdown$Lock</span><br></pre></td></tr></table></figure></p>
+<p>可以看到，PreMainTraceAgent已经可以正常工作了，这里所加载的类型，并非系统中所有的Class类。实际上，在jat.jar执行之前的所有已加载的类型都是无法捕获的。因此，大量的系统核心类会丢失，但是应用程序的类都在main()函数执行之后加载，因此都可以通过这种方式捕获。</p>
+<h3 id="11-4-2-使用Java-Agent为函数增加计时功能"><a href="#11-4-2-使用Java-Agent为函数增加计时功能" class="headerlink" title="11.4.2 使用Java Agent为函数增加计时功能"></a><a name="43">11.4.2 使用Java Agent为函数增加计时功能</a></h3><p>之前已经通过ASM进行字节码织入，使Account.operation()方法具有计时功能。但提供的织入方式不够灵活，要求在Account类在进行javac编译后，再进行基于文件织入。这种做法虽然可行，但是过于繁琐。而有了Java Agent的支持，就可以大大改进这种方式。<br>下面的代码展示了通过Java Agent直接进行字节码织入的方式。(<span style="border-bottom:2px dashed yellow;">别忘记pom添加asm相关的包</span>)</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;dependency&gt;</span><br><span class="line">	&lt;groupId&gt;org.ow2.asm&lt;/groupId&gt;</span><br><span class="line">	&lt;artifactId&gt;asm&lt;/artifactId&gt;</span><br><span class="line">	&lt;version&gt;6.2&lt;/version&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br></pre></td></tr></table></figure>
+<h3 id="11-4-3-动态重转换类"><a href="#11-4-3-动态重转换类" class="headerlink" title="11.4.3 动态重转换类"></a><a name="44">11.4.3 动态重转换类</a></h3><h3 id="11-4-4-有关Java-Agent的总结"><a href="#11-4-4-有关Java-Agent的总结" class="headerlink" title="11.4.4 有关Java Agent的总结"></a><a name="45">11.4.4 有关Java Agent的总结</a></h3><p><strong><code>github</code></strong></p>
 
           
         
@@ -463,7 +945,7 @@
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="新猪先生's Blog">
+      <meta itemprop="name" content="阿洋's Blog">
     </span>
 
     
@@ -609,7 +1091,7 @@
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="新猪先生's Blog">
+      <meta itemprop="name" content="阿洋's Blog">
     </span>
 
     
@@ -782,7 +1264,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-count">6</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -792,8 +1274,8 @@
               
               
               <div class="site-state-item site-state-categories">
-                <a href="/about/index.html">
-                  <span class="site-state-item-count">1</span>
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">3</span>
                   <span class="site-state-item-name">categories</span>
                 </a>
               </div>
@@ -804,7 +1286,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-count">4</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>
@@ -859,7 +1341,7 @@
 
 
 
-  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
 
 
 
@@ -958,6 +1440,13 @@
 
   
   
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
 
   
 
